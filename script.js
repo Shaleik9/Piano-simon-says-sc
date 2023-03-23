@@ -4,7 +4,6 @@
 const pianoKeys = document.querySelectorAll('.key');
 const commence = document.getElementsByClassName('start')[0];
 const levelDisplay = document.getElementsByClassName('level-display')[0];
-const messageBox = document.querySelector('game-status');
 let ready = false;
 let playerSequence = [];
 let sequence = [];
@@ -43,6 +42,7 @@ function flashKeys(key) {
     audio.currentTime = 0;
   }, 800);
 }
+
 // Show random flash for user to input
 function displaySequence() {
   let i = 0;
@@ -58,22 +58,29 @@ function displaySequence() {
     i++
   }, 1000);
 }
+
 // Add new sequence
 function addSequence() {
-  //playerSequence = [];
   const randomFlash = Math.floor(Math.random() * pianoKeys.length);
   const randomKey = pianoKeys[randomFlash];
   // console.log('verifying flash sequence',randomKey);
   sequence.push(randomKey.dataset.note);
+  if (level === 1) {
+    displayWin();
+    restart();
+    return;
+  }
   level++;
-  // check sequence.length if reaches level dont increment
   levelDisplay.textContent = `Level: ${level}`;
   displaySequence();
 }
+
 // Check answer / incorrect inputs
 function handleClick() {
   //console.log('handle click', ready);
   if (ready == false) return;
+  if (document.querySelector('.lossMessage')) return;
+  if (document.querySelector('.winMessage')) return;
   const key = this;
   const note = key.dataset.note;
   flashKeys(key);
@@ -86,18 +93,30 @@ function handleClick() {
       addSequence();
     }
   } else {
-    alert(`Nice try! you made it to ${level}, not bad.`);
-    // replace with on screen message 
+    displayLoss();
     restart();
     return;
   }
 }
+// function gameLoss() {
+//   displayLoss();
+//   restart();
+// }
 
-function gameEnd() {
-
-}
+// function gameEnd() {
+//   displayWin();
+//   restart();
+// }
 
 function start() {
+  const messageWin = document.querySelector('win');
+  if (messageWin) {
+    messageWin.remove();
+  }
+  const messageLoss = document.querySelector('loss');
+  if (messageLoss) {
+    messageLoss.remove();
+  }
   level = 0;
   playerSequence = [];
   sequence = [];
@@ -118,5 +137,19 @@ pianoKeys.forEach(key => {
   key.addEventListener('click', handleClick);
 });
 
-// Create win condition 
-// Create display message function
+
+function displayWin() {
+  //console.log('verifying display win')
+  const messageWin = document.createElement('win');
+  messageWin.textContent = "Congrats, you're built different!";
+  messageWin.classList.add('winMessage');
+  document.body.appendChild(messageWin);
+}
+
+function displayLoss() {
+  console.log('verifying display loss');
+  const messageLoss = document.createElement('loss');
+  messageLoss.textContent = `Nice try! you made it to level ${level}.`;
+  messageLoss.classList.add('lossMessage');
+  document.body.appendChild(messageLoss);
+}
