@@ -12,7 +12,7 @@ if (level == 0) {
 pianoKeys.forEach(key => {
   key.addEventListener('click', () => {
     const note = key.dataset.note;
-    const audio = new Audio(`/keys2/${note}.mp3`);
+    const audio = new Audio(`keys2/${note}.mp3`);
     audio.play();
     key.classList.add('active');
     setTimeout(() => key.classList.remove('active'), 175)
@@ -22,7 +22,7 @@ pianoKeys.forEach(key => {
 
 function flashKeys(key) {
   const note = key.dataset.note;
-  const audio = new Audio(`/keys2/${note}.mp3`);
+  const audio = new Audio(`keys2/${note}.mp3`);
   key.classList.add('active');
   audio.play();
   setTimeout(() => {
@@ -130,7 +130,6 @@ function displayLoss() {
 }
 
 function displayWelcome() {
-  console.log('verifying display Welcome');
   const messageWelcome = document.createElement('welcome');
   messageWelcome.textContent = `Welcome to Simon Says`;
   messageWelcome.classList.add('welcomeMessage');
