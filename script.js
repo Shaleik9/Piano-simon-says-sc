@@ -122,7 +122,6 @@ function displayWin() {
 }
 
 function displayLoss() {
-  console.log('verifying display loss');
   const messageLoss = document.createElement('loss');
   messageLoss.textContent = `Nice try! you made it to level ${level}.`;
   messageLoss.classList.add('lossMessage');
